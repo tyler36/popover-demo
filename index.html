@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style ref="stylesheet">
+    [popover] {
+      width: 100%;
+      max-width: 20rem;
+      padding: 1rem;
+      border-radius: .5rem;
+      background: hsl(0, 0%, 25%);
+      color: hsl(220, 14%, 96%);
+
+      opacity: 0;
+      transition: all .5s allow-discrete;
+      position: relative;
+      inset: unset;
+      bottom: 5px;
+      right: 5px;
+      display: flex;
+    }
+
+    [popover]:popover-open {
+      opacity: 1;
+    }
+
+    /* Needs to be included after the previous [popover]:popover-open
+      rule to take effect, as the specificity is the same
+      @see https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior
+    */
+    @starting-style {
+      [popover]:popover-open {
+        opacity: 0;
+      }
+    }
+
+    [popover]::backdrop {
+      backdrop-filter: blur(3px);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+
+  <div class="margin-auto container m-10 bg-white p-4">
+    <div class="flex justify-between">
+      <div class="flex gap-x-4">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          popovertarget="popover-message" popovertargetaction="show">
+          Open popover
+        </button>
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          popovertarget="popover-message" popovertargetaction="hide">
+          Close popover
+        </button>
+      </div>
+
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="show()">
+        Open popover
+      </button>
+    </div>
+
+    <div id="popover-message" popover="manual">
+      <div class="flex justify-between mb-3">
+        <span class="mb-1 text-md font-semibold text-white">
+          Popover Title
+        </span>
+        <button popovertarget="popover-message" popovertargetaction="hide">X</button>
+      </div>
+      Message for the popover
+    </div>
+    <div id="popover2-message" popover>Message 2 for the popover</div>
+  </div>
+
+  <script>
+    function show() {
+      document.getElementById('popover2-message').showPopover()
+      setTimeout(() => hide(), 2000);
+    }
+    function hide() {
+      document.getElementById('popover2-message').hidePopover()
+    }
+  </script>
+</body>
+
+</html>
